@@ -68,8 +68,8 @@ plot(grains)
 
 
 ## poly
-This would be an example of the 'poly' image model which requires a) a phase map
-where each phase is described by a gray value and a boundary map.
+This is an example of the 'poly' model which requires I) a phase map
+where each phase is described by a gray value and II) a boundary map.
 
 ![boundarymap](https://user-images.githubusercontent.com/11697557/37594308-1c6d0c08-2b75-11e8-8e9c-d353fe002500.png)
 ![phasemap](https://user-images.githubusercontent.com/11697557/37594309-1ca596ea-2b75-11e8-9c63-0362aca4a6ab.png)
