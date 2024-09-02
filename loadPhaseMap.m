@@ -99,7 +99,13 @@ opt.y = reshape(Y,1,[])';
 opt.e = reshape(zeros(size(phases)),1,[])';
 %create ebsd-object from rotation,mask, cs,ss and XY coordinates
 % fake_ebsd = EBSD(o,reshape(phases,1,[])',cs,ss,'options',opt);
+try
+% this syntax works for mtex 5.11 and earlier (no ebsd.pos)
 ebsd = EBSD(o,reshape(phases,1,[])',cs,opt);
+catch
+% this syntax is for mtex 6.0beta2 and later, i.e. from the feature/grain3d branch
+ebsd = EBSD([opt.x(:) opt.y(:)], o,reshape(phases,1,[])',cs,opt);
+end
 
 %some silly way to define the unitcell - I don't know better
 ebsd.unitCell = [-0.5 -0.5;0.5 -0.5; 0.5 0.5;-0.5  0.5];
