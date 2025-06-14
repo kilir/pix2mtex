@@ -94,19 +94,20 @@ end
 faEu=reshape(zeros(size(phases)),1,[])';
 o = rotation('Euler',faEu,faEu,faEu);
 
+%assign X,Y coordinates
+opt.x = reshape(X,1,[])';
+opt.y = reshape(Y,1,[])';
+opt.e = reshape(zeros(size(phases)),1,[])';
+%create ebsd-object from rotation,mask, cs,ss and XY coordinates
+% fake_ebsd = EBSD(o,reshape(phases,1,[])',cs,ss,'options',opt);
 if ~strfind(getMTEXpref('version'),'mtex-6')
-    %assign X,Y coordinates
-    opt.x = reshape(X,1,[])';
-    opt.y = reshape(Y,1,[])';
-    opt.e = reshape(zeros(size(phases)),1,[])';
-    %create ebsd-object from rotation,mask, cs,ss and XY coordinates
-    % fake_ebsd = EBSD(o,reshape(phases,1,[])',cs,ss,'options',opt);
-    ebsd = EBSD(o,reshape(phases,1,[])',cs,opt);
+% this syntax works for mtex 5.11 and earlier (no ebsd.pos)
+ebsd = EBSD(o,reshape(phases,1,[])',cs,opt);
 else
-    pos = vector3d(reshape(X,1,[])',reshape(Y,1,[])',zeros(length(X(:)),1));
-    prop = struct;
-    ebsd = EBSD(pos,o,reshape(phases,1,[])',cs,prop)
+% this syntax is for mtex-6
+ebsd = EBSD([opt.x(:) opt.y(:)], o,reshape(phases,1,[])',cs,opt);
 end
+
 %some silly way to define the unitcell - I don't know better
 ebsd.unitCell = [-0.5 -0.5;0.5 -0.5; 0.5 0.5;-0.5  0.5];
 ebsd = updateUnitCell(ebsd);
